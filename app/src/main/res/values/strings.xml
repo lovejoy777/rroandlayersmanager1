@@ -1,0 +1,59 @@
+<resources>
+
+    <!-- Main Layers Strings -->
+    <string name="app_name">rroandlayersmanager1</string>
+    <string name="slogan">\"Your Style Your Choice\"</string>
+    <string name="splashTitle">SPLASH</string>
+    <string name="action_settings">Settings</string>
+
+
+    <!-- Menu CardView 1 Strings -->
+    <string name="card1text1">Installed Layers</string>
+    <string name="card1text2">• View Installed</string>
+    <string name="card1text3">• Backup Installed Layers</string>
+    <string name="card1text4">• Delete Installed Layers</string>
+
+    <!-- Menu CardView 2 Strings -->
+    <string name="card2text1">Install</string>
+    <string name="card2text2">• Install new Layers</string>
+    <string name="card2text3">• Restore existing backups</string>
+    <string name="card2text4">• Delete Installed Layers</string>
+
+    <!-- Menu CardView 3 Strings -->
+    <string name="card3text1">Reboot</string>
+    <string name="card3text2">• For changes to take effect</string>
+    <string name="card3text3">• </string>
+    <string name="card3text4">• </string>
+
+    <!-- FilePicker Strings -->
+    <string name="delete">delete</string>
+    <string name="backup">backup</string>
+    <string name="back">back</string>
+    <color name="action_select">#6d6d6d</color>
+    <string name="new_folder">New folder</string>
+    <string name="create_folder_error">Failed to create folder</string>
+    <string name="go_back">Go back</string>
+    <string name="select_something_first">Nothing Selected</string>
+
+    <plurals
+        name="select_dir">
+        <item quantity="one">Select directory</item>
+        <item quantity="other">Select directories</item>
+    </plurals>
+
+    <plurals
+        name="select_file">
+        <item quantity="one">Select Layers</item>
+        <item quantity="other">Select files</item>
+    </plurals>
+
+    <plurals
+        name="select_dir_or_file">
+        <item quantity="one">Select directory or file</item>
+        <item quantity="other">Select directories or files</item>
+    </plurals>
+
+    <!-- FilePicker dialog Strings -->
+    <string name="name">Name</string>
+
+</resources>
