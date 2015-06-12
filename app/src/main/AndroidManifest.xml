@@ -12,12 +12,13 @@ xmlns:tools="http://schemas.android.com/tools"
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:label="Layers"
+        android:theme="@style/LayersTheme" >
         <activity
             android:name=".Splash"
             android:noHistory="true"
-            android:label="Layers" >
+            android:label="Layers"
+            android:theme="@style/LayersTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,9 +29,36 @@ xmlns:tools="http://schemas.android.com/tools"
         <activity
             android:name=".menu"
             android:icon="@mipmap/ic_launcher"
-            android:label="Menu">
+            android:label="Menu"
+            android:theme="@style/LayersTheme">
             <intent-filter>
                 <action android:name="com.lovejoy777.rroandlayersmanager1.MENU" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".Backup"
+            android:icon="@mipmap/ic_launcher"
+            android:label="Backup"
+            android:theme="@style/LayersTheme"
+            android:parentActivityName=".menu">
+            <intent-filter>
+                <action android:name="com.lovejoy777.rroandlayersmanager1.BACKUP" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".Install"
+            android:icon="@mipmap/ic_launcher"
+            android:label="Install"
+            android:theme="@style/LayersTheme"
+            android:parentActivityName=".menu">
+            <intent-filter>
+                <action android:name="com.lovejoy777.rroandlayersmanager1.INSTALL" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -40,9 +68,68 @@ xmlns:tools="http://schemas.android.com/tools"
             android:name=".Settings"
             android:icon="@mipmap/ic_launcher"
             android:label="Settings"
+            android:theme="@style/LayersTheme"
             android:parentActivityName=".menu">
             <intent-filter>
                 <action android:name="com.lovejoy777.rroandlayersmanager1.SETTINGS" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".filepicker.FilePickerActivity"
+            android:label="Layers"
+            android:theme="@style/LayersTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.GET_CONTENT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".PlaystoreSuperUser"
+            android:icon="@mipmap/ic_launcher"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="com.lovejoy777.rroandlayersmanager1.PLAYSU" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".Instructions"
+            android:icon="@mipmap/ic_launcher"
+            android:label="Instructions"
+            android:parentActivityName=".menu"
+            android:theme="@style/LayersTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.INSTRUCTIONS" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".About"
+            android:icon="@mipmap/ic_launcher"
+            android:label="About"
+            android:parentActivityName=".menu"
+            android:theme="@style/LayersTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.ABOUT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ChangeLog"
+            android:icon="@mipmap/ic_launcher"
+            android:label="ChangeLog"
+            android:parentActivityName=".menu"
+            android:theme="@style/LayersTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.CHANGELOG" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

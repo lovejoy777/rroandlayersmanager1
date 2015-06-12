@@ -74,7 +74,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="light"
-                android:textColor="@color/white"
                 android:text="@string/back"/>
 
             <Button
@@ -84,7 +83,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="light"
-                android:textColor="@color/white"
                 android:text="@string/backup"/>
 
             <Button
@@ -94,7 +92,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="light"
-                android:textColor="@color/white"
                 android:text="@string/delete"/>
 
         </LinearLayout>

@@ -29,13 +29,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CheckedTextView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lovejoy777.rroandlayersmanager1.R;
-import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -142,7 +140,7 @@ public abstract class AbstractFilePickerFragment<T> extends ListFragment
                     @Override
                     public void onClick(final View v) {
                         if (listener == null) {
-                            return;
+                             return;
                         }
 
                         // Some invalid cases first
@@ -166,6 +164,8 @@ public abstract class AbstractFilePickerFragment<T> extends ListFragment
                         }
                     }
                 });
+
+
 
         view.findViewById(R.id.button_go_parent)
                 .setOnClickListener(new View.OnClickListener() {

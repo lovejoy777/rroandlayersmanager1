@@ -42,7 +42,7 @@
         android:fontFamily="light"
         android:padding="8dp"
         android:gravity="center_vertical"
-        android:textColor="?android:attr/textColorPrimary"
+        android:textColor="@color/blueicon1"
         android:id="@android:id/text1"
         android:maxLines="1"
         android:ellipsize="end"

@@ -22,6 +22,8 @@ import android.app.FragmentManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.WindowManager;
@@ -59,7 +61,7 @@ import java.util.List;
  *
  * @param <T>
  */
-public abstract class AbstractFilePickerActivity<T> extends Activity
+public abstract class AbstractFilePickerActivity<T> extends AppCompatActivity
         implements AbstractFilePickerFragment.OnFilePickedListener {
     public static final String EXTRA_START_PATH = "nononsense.intent" + ".START_PATH";
     public static final String EXTRA_MODE = "nononsense.intent.MODE";
@@ -84,6 +86,9 @@ public abstract class AbstractFilePickerActivity<T> extends Activity
         setContentView(R.layout.activity_filepicker);
 
 
+        // Handle Toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
 
         Intent intent = getIntent();

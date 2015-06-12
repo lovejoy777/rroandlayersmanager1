@@ -1,14 +1,34 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:tb="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context=".menu">
+    android:gravity="center">
+
+    <RelativeLayout
+        android:id="@+id/toolbar_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:paddingTop="@dimen/tool_bar_top_padding">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:elevation="4dp"
+            android:transitionName="actionBar" />
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:layout_below="@+id/toolbar_container"
+        android:padding="16dp"
+        android:background="@color/background_material_light">
 
     <!-- A CardView 1 Installed -->
     <android.support.v7.widget.CardView
@@ -30,7 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/installed_image"
-                android:src="@drawable/chart"
+                android:src="@drawable/plus"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginEnd="16dp"
@@ -43,25 +63,20 @@
                 android:layout_toEndOf="@+id/installed_image"
                 android:layout_alignParentTop="true"
                 android:textSize="25sp"
+                android:textColor="@color/blueicon2"
                 android:text="@string/card1text1"
                 />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/card1text2"
-                android:layout_toEndOf="@+id/installed_image"
-                android:layout_below="@+id/card1text1"
-                android:text="@string/card1text2"
-                />
+
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/card1text3"
                 android:layout_toEndOf="@+id/installed_image"
-                android:layout_below="@+id/card1text2"
-                android:text="@string/card1text3"
+                android:layout_below="@+id/card1text1"
+                android:textColor="@color/blueicon1"
+                android:text="@string/card1text2"
                 />
 
             <TextView
@@ -69,7 +84,8 @@
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@+id/installed_image"
                 android:layout_below="@+id/card1text3"
-                android:text="@string/card1text4"
+                android:textColor="@color/blueicon1"
+                android:text="@string/card1text3"
                 />
 
         </RelativeLayout>
@@ -96,7 +112,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/install_image"
-                android:src="@drawable/plus"
+                android:src="@drawable/chart"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginEnd="16dp"
@@ -109,6 +125,7 @@
                 android:layout_toEndOf="@+id/install_image"
                 android:layout_alignParentTop="true"
                 android:textSize="25sp"
+                android:textColor="@color/blueicon2"
                 android:text="@string/card2text1"
                 />
 
@@ -118,6 +135,7 @@
                 android:id="@+id/card2text2"
                 android:layout_toEndOf="@+id/install_image"
                 android:layout_below="@+id/card2text1"
+                android:textColor="@color/blueicon1"
                 android:text="@string/card2text2"
                 />
 
@@ -127,16 +145,11 @@
                 android:id="@+id/card2text3"
                 android:layout_toEndOf="@+id/install_image"
                 android:layout_below="@+id/card2text2"
+                android:textColor="@color/blueicon1"
                 android:text="@string/card2text3"
                 />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/install_image"
-                android:layout_below="@+id/card2text3"
-                android:text="@string/card2text4"
-                />
+
 
         </RelativeLayout>
 
@@ -175,6 +188,7 @@
                 android:layout_toEndOf="@+id/reboot_image"
                 android:layout_alignParentTop="true"
                 android:text="@string/card3text1"
+                android:textColor="@color/blueicon2"
                 android:textSize="25sp"
                 />
 
@@ -184,6 +198,7 @@
                 android:id="@+id/card3text2"
                 android:layout_toEndOf="@+id/reboot_image"
                 android:layout_below="@+id/card3text1"
+                android:textColor="@color/blueicon1"
                 android:text="@string/card3text2"
                 />
 
@@ -193,17 +208,11 @@
                 android:id="@+id/card3text3"
                 android:layout_toEndOf="@+id/reboot_image"
                 android:layout_below="@+id/card3text2"
+                android:textColor="@color/blueicon1"
                 android:text="@string/card3text3"
                 />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/card3text4"
-                android:layout_toEndOf="@+id/reboot_image"
-                android:layout_below="@+id/card3text3"
-                android:text="@string/card3text4"
-                />
+
 
         </RelativeLayout>
 
@@ -217,6 +226,7 @@
         android:layout_marginTop="16dp"
         android:text="@string/slogan" />
 
-
 </LinearLayout>
+
+</RelativeLayout>
 

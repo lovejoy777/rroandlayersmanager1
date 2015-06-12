@@ -1,22 +1,30 @@
 package com.lovejoy777.rroandlayersmanager1;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.support.v7.widget.CardView;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.lovejoy777.rroandlayersmanager1.filepicker.FilePickerActivity;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.accountswitcher.AccountHeader;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SectionDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.exceptions.RootDeniedException;
 import com.stericson.RootTools.execution.CommandCapture;
@@ -32,15 +40,21 @@ import java.util.concurrent.TimeoutException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 
-
-public class menu extends Activity {
+public class menu extends AppCompatActivity {
 
     static final String TAG = "menu";
+    private static final int PROFILE_SETTING = 1;
+
+    //save our header or result
+    private AccountHeader.Result headerResult = null;
+    private Drawer.Result result = null;
 
 
     final String startDirInstalled = "/vendor/overlay";
-    final String startDirInstall = "/sdcard/Overlays";
+    final String startDirInstall = Environment.getExternalStorageDirectory() +  "/Overlays";
     private static final int CODE_SD = 0;
     private static final int CODE_DB = 1;
 
@@ -53,318 +67,271 @@ public class menu extends Activity {
 
 
 
-        // GET STRING FOR TEXT VIEW
-        final Intent extras = getIntent();
-        String SZP = null;
-        if (extras != null) {
-            SZP = extras.getStringExtra("key1");
-        }
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        if (SZP != null) {
+        // Create a few sample profile
+        final IProfile profile = new ProfileDrawerItem().withName("BitSyko").withEmail("www.bitsyko.com").withIcon(getResources().getDrawable(R.mipmap.ic_launcher));
 
-            final AlertDialog.Builder alert = new AlertDialog.Builder(menu.this);
-            alert.setIcon(R.drawable.chart);
-            alert.setTitle("Options");
-            alert.setMessage("backup or delete selected files.");
-            alert.setPositiveButton("backup", new DialogInterface.OnClickListener() {
+        // Create the AccountHeader
+        headerResult = new AccountHeader()
+                .withActivity(this)
+                .withHeaderBackground(R.drawable.header1)
+                .withCompactStyle(true)
+                .addProfiles(profile)
+                .withSelectionListEnabledForSingleProfile(false)
+                .withSelectionListEnabled(false)
+                .withProfileImagesVisible(true)
 
-                public void onClick(DialogInterface dialog, int id) {
-                    final AlertDialog.Builder alert = new AlertDialog.Builder(menu.this);
-                    final EditText input = new EditText(menu.this);
-                    alert.setIcon(R.drawable.ic_backup);
-                    alert.setTitle("LAYERS BACKUP");
-                    alert.setMessage("");
-                    alert.setView(input);
-                    input.setHint("enter backup name");
+                .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
 
-                    alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                           // get editText String
-                           String backupname = input.getText().toString();
-
-                            if (backupname.length() <= 1) {
-
-                                Toast.makeText(menu.this, "INPUT A NAME", Toast.LENGTH_LONG).show();
-
-                                finish();
-
+                    @Override
+                    public void onProfileChanged(View view, IProfile profile) {
+                        //sample usage of the onProfileChanged listener
+                        //if the clicked item has the identifier 1 add a new profile ;)
+                        if (profile instanceof IDrawerItem && ((IDrawerItem) profile).getIdentifier() == PROFILE_SETTING) {
+                            IProfile newProfile = new ProfileDrawerItem().withNameShown(true).withName("lovejoy777").withEmail("salovejoy@gmail.com").withIcon(getResources().getDrawable(R.mipmap.ic_launcher));
+                            //IProfile newProfile = new ProfileDrawerItem().withNameShown(true).withName("lovejoy777").withEmail("salovejoy@gmail.com").withIcon(getResources().getDrawable(R.drawable.profile5));
+                            if (headerResult.getProfiles() != null) {
+                                //we know that there are 2 setting elements. set the new profile above them ;)
+                                headerResult.addProfile(newProfile, headerResult.getProfiles().size() - 2);
                             } else {
-
-                                File directory = new File("/vendor/overlay");
-                                File[] contents = directory.listFiles();
-
-                                // Folder is empty
-                                if (contents.length == 0) {
-
-                                    Toast.makeText(menu.this, "NOTHING TO BACKUP", Toast.LENGTH_LONG).show();
-
-                                    finish();
-                                }
-
-                                // Folder contains files
-                                else {
-                                    try {
-
-                                        String sdcard = "/sdcard/Overlays";
-
-                                        // CREATES /SDCARD/OVERLAYS/BACKUP/TEMP
-                                        File dir1 = new File(sdcard + "/Backup/temp");
-                                        if (!dir1.exists() && !dir1.isDirectory()) {
-                                            CommandCapture command = new CommandCapture(0, "mkdir " + sdcard + "/Backup/temp");
-                                            try {
-                                                RootTools.getShell(true).add(command);
-                                                while (!command.isFinished()) {
-                                                    Thread.sleep(1);
-                                                }
-                                            } catch (IOException e) {
-                                                e.printStackTrace();
-                                            } catch (TimeoutException e) {
-                                                e.printStackTrace();
-                                            } catch (RootDeniedException e) {
-                                                e.printStackTrace();
-                                            } catch (InterruptedException e) {
-                                                e.printStackTrace();
-                                            }
-                                        }
-
-                                        // CREATES /SDCARD/OVERLAYS/BACKUP/BACKUPNAME
-                                        File dir2 = new File(sdcard + "/Backup/" + backupname);
-                                        if (!dir2.exists() && !dir2.isDirectory()) {
-                                            CommandCapture command1 = new CommandCapture(0, "mkdir " + sdcard + "/Backup/" + backupname);
-                                            try {
-                                                RootTools.getShell(true).add(command1);
-                                                while (!command1.isFinished()) {
-                                                    Thread.sleep(1);
-                                                }
-                                            } catch (IOException e) {
-                                                e.printStackTrace();
-                                            } catch (TimeoutException e) {
-                                                e.printStackTrace();
-                                            } catch (RootDeniedException e) {
-                                                e.printStackTrace();
-                                            } catch (InterruptedException e) {
-                                                e.printStackTrace();
-                                            }
-                                        }
-
-                                        RootTools.remount("/system", "RW");
-
-                                        // CHANGE PERMISSIONS OF /VENDOR/OVERLAY && /SDCARD/OVERLAYS/BACKUP
-                                        CommandCapture command2 = new CommandCapture(0,
-                                                "chmod -R 755 /vendor/overlay",
-                                                "chmod -R 755 " + Environment.getExternalStorageDirectory() + "/Overlays/Backup/",
-                                                "cp -fr /vendor/overlay " + Environment.getExternalStorageDirectory() + "/Overlays/Backup/temp/");
-                                        RootTools.getShell(true).add(command2);
-                                        while (!command2.isFinished()) {
-                                            Thread.sleep(1);
-                                        }
-
-                                        // ZIP OVERLAY FOLDER
-                                        zipFolder(Environment.getExternalStorageDirectory() + "/Overlays/Backup/temp/overlay", Environment.getExternalStorageDirectory() + "/Overlays/Backup/" + backupname + "/overlay.zip");
-
-                                        // DELETE /SDCARD/OVERLAYS/BACKUP/TEMP FOLDER
-                                        RootTools.deleteFileOrDirectory(Environment.getExternalStorageDirectory() + "/Overlays/Backup/temp", true);
-
-                                        // CHANGE PERMISSIONS OF /VENDOR/OVERLAY/ 666  && /VENDOR/OVERLAY 777 && /SDCARD/OVERLAYS/BACKUP/ 666
-                                        CommandCapture command17 = new CommandCapture(0, "chmod -R 666 /vendor/overlay", "chmod 755 /vendor/overlay", "chmod -R 666" + Environment.getExternalStorageDirectory() + "/Overlays/Backup/");
-                                        RootTools.getShell(true).add(command17);
-                                        while (!command17.isFinished()) {
-                                            Thread.sleep(1);
-                                        }
-
-                                        // CLOSE ALL SHELLS
-                                        RootTools.closeAllShells();
-
-                                        Toast.makeText(menu.this, "BACKUP COMPLETED", Toast.LENGTH_LONG).show();
-
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    } catch (RootDeniedException e) {
-                                        e.printStackTrace();
-                                    } catch (TimeoutException e) {
-                                        e.printStackTrace();
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
-
-                                    finish();
-                                }
+                                headerResult.addProfiles(newProfile);
                             }
                         }
-                    });
+                    }
+                })
 
-                    alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .withSavedInstance(savedInstanceState)
+                .build();
 
-                        public void onClick(DialogInterface dialog, int whichButton) {
+        //Create the drawer1
+        result = new Drawer()
+                .withActivity(this)
+                .withToolbar(toolbar)
+                .withActionBarDrawerToggleAnimated(true)
+                .withDisplayBelowToolbar(true)
+                //.withSliderBackgroundColor(bgcolor)
+                .withAccountHeader(headerResult) //set the AccountHeader we created earlier for the header
+                .addDrawerItems(
 
-                            dialog.cancel();
+                        new PrimaryDrawerItem().withName(R.string.drawer_item_about).withIcon(R.drawable.ic_about).withIdentifier(1).withCheckable(false),
+                        new PrimaryDrawerItem().withName(R.string.drawer_item_changelog).withIcon(R.drawable.ic_changelog).withIdentifier(2).withCheckable(false),
+                        new DividerDrawerItem(),
+                        new PrimaryDrawerItem().withName(R.string.drawer_item_instructions).withIcon(R.drawable.info).withIdentifier(3).withCheckable(false),
+                        new PrimaryDrawerItem().withName(R.string.drawer_item_settings).withIcon(R.drawable.settings).withIdentifier(4).withCheckable(false),
+                        new SectionDrawerItem().withName(R.string.drawer_item_links_header),
+                        new DividerDrawerItem(),
+                        new SecondaryDrawerItem().withName(R.string.drawer_item_gplus).withIcon(R.drawable.bitsyko_g_plus).withIdentifier(5).withCheckable(false),
+                        new SecondaryDrawerItem().withName(R.string.drawer_item_xda).withIcon(R.drawable.xda).withIdentifier(6).withCheckable(false),
+                        new SecondaryDrawerItem().withName(R.string.drawer_item_forum).withIcon(R.drawable.ic_forums).withIdentifier(7).withCheckable(false),
+                        new SecondaryDrawerItem().withName(R.string.drawer_item_website).withIcon(R.drawable.ic_web).withIdentifier(8).withCheckable(false)
+                ) // add the items we want to use with our Drawer
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id, IDrawerItem drawerItem) {
 
+                        if (drawerItem != null) {
+                            if (drawerItem.getIdentifier() == 1) {
+                                Intent intent = new Intent(menu.this, About.class);
+                                menu.this.startActivity(intent);
+                            } else if (drawerItem.getIdentifier() == 2) {
+                                Intent intent = new Intent(menu.this, ChangeLog.class);
+                                menu.this.startActivity(intent);
+                            } else if (drawerItem.getIdentifier() == 3) {
+                                Intent intent = new Intent(menu.this, Instructions.class);
+                                menu.this.startActivity(intent);
+                            } else if (drawerItem.getIdentifier() == 4) {
+                                Intent intent = new Intent(menu.this, Settings.class);
+                                menu.this.startActivity(intent);
+                            } else if (drawerItem.getIdentifier() == 5) {
+                                launchgplus();
+                            } else if (drawerItem.getIdentifier() == 6) {
+                                launchxda();
+                            } else if (drawerItem.getIdentifier() == 7) {
+                                launchforum();
+                            } else if (drawerItem.getIdentifier() == 8) {
+                                launchwebsite();
+
+                            }
                         }
-                    });
+                    }
+                })
+                .withSavedInstance(savedInstanceState)
+                .build();
 
-                    alert.show();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        result.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
 
-                }
-            })
-                    .setNegativeButton("delete", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            // COMMAND 1 DELETE SELECTED LAYERS
-                            deletemultiplecommand();
-
-                        }
-                    });
-
-            alert.show();
-        }
-
-        String sdcard = "/sdcard/Overlays";
-
-        // CREATES /SDCARD/OVERLAYS
-        File dir = new File(sdcard);
-        if (!dir.exists() && !dir.isDirectory()) {
-            CommandCapture command3 = new CommandCapture(0, "mkdir " + sdcard);
-            try {
-                RootTools.getShell(true).add(command3);
-                while (!command3.isFinished()) {
-                    Thread.sleep(1);
-                }
+        // set the selection to the item with the identifier 0
+        result.setSelectionByIdentifier(0, false);
+        headerResult.setActiveProfile(profile);
 
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (TimeoutException e) {
-                e.printStackTrace();
-            } catch (RootDeniedException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-        String sdcard1 = "/sdcard/Overlays/Backup";
-        // CREATES /SDCARD/OVERLAYS/BACKUP
-        File dir1 = new File(sdcard1);
-        if (!dir1.exists() && !dir1.isDirectory()) {
-            CommandCapture command4 = new CommandCapture(0, "mkdir " + sdcard1);
-            try {
-                RootTools.getShell(true).add(command4);
-                while (!command4.isFinished()) {
-                    Thread.sleep(1);
-                }
 
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (TimeoutException e) {
-                e.printStackTrace();
-            } catch (RootDeniedException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
 
-        }
-
-        RootTools.remount("/system", "RW");
-        String vendover = "/vendor/overlay";
-        // CREATES /VENDOR/OVERLAY
-        File dir2 = new File(vendover);
-        if (!dir2.exists() && !dir2.isDirectory()) {
-            CommandCapture command5 = new CommandCapture(0, "mkdir " + vendover);
-            try {
-                RootTools.getShell(true).add(command5);
-                while (!command5.isFinished()) {
-                    Thread.sleep(1);
-                }
-
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (TimeoutException e) {
-                e.printStackTrace();
-            } catch (RootDeniedException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-        card1 = (CardView) findViewById(R.id.card_view1);
-        card2 = (CardView) findViewById(R.id.card_view2);
-        card3 = (CardView) findViewById(R.id.card_view3);
-
-        // CARD 1
-        card1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-                // Set these depending on your use case. These are the defaults.
-                i.putExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, true);
-                i.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, false);
-                i.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_FILE);
-                i.putExtra(FilePickerActivity.EXTRA_START_PATH, startDirInstalled);
-
-                // start filePicker forResult
-                startActivityForResult(i, CODE_SD);
-
-            } // end card1 onClick
-        }); // end card 1
-
-        card2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-                // Set these depending on your use case. These are the defaults.
-                i.putExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, true);
-                i.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, false);
-                i.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_FILE);
-                i.putExtra(FilePickerActivity.EXTRA_START_PATH, startDirInstall);
-
-                // start filePicker forResult
-                startActivityForResult(i, CODE_SD);
-
-            } // end card 2 onClick
-        }); // end card 2
-
-        card3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Toast.makeText(menu.this, "Button 3", Toast.LENGTH_LONG).show();
-                rebootcommand(); // REBOOT DEVICE
-
-            } // end card  onClick
-        }); // end card 33
-    } // end oncreate
-
-    public void deletemultiplecommand () {
-
-        ArrayList<String> paths;
-        paths = getIntent().getStringArrayListExtra("key2");
-
-        if (paths != null) {
-
-            for (String path : paths) {
-                if (path.startsWith("file://")) {
-                    path = path.substring(7);
-
-                    RootTools.remount("/system", "RW");
-                    RootTools.deleteFileOrDirectory(path, true);
-                }
-            }
-
-            Toast.makeText(menu.this, "DELETED SELECTED LAYERS", Toast.LENGTH_LONG).show();
+        // IF ROOT ACCESS IS GIVEN / ELSE LAUNCH PLAYSTORE FOR SUPERUSER APP
+        if (!RootTools.isAccessGiven()) {
+            Toast.makeText(menu.this, "Your device doesn't seem to be rooted", Toast.LENGTH_LONG).show();
+            Intent intent0 = new Intent();
+            intent0.setClass(this, PlaystoreSuperUser.class);
+            startActivity(intent0);
+            finish();
 
         } else {
 
-            Toast.makeText(menu.this, "NOTHING TO DELETE", Toast.LENGTH_LONG).show();
-        }
+            String sdOverlays = Environment.getExternalStorageDirectory() + "/Overlays";
+            String sdcard = Environment.getExternalStorageDirectory() + "";
+            String vendor = "/vend";
+
+            RootTools.remount(sdcard, "RW");
+
+            // CREATES /SDCARD/OVERLAYS
+            File dir = new File(sdOverlays);
+            if (!dir.exists() && !dir.isDirectory()) {
+                CommandCapture command3 = new CommandCapture(0, "mkdir " + sdOverlays);
+                try {
+                    RootTools.getShell(true).add(command3);
+                    while (!command3.isFinished()) {
+                        Thread.sleep(1);
+                    }
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (TimeoutException e) {
+                    e.printStackTrace();
+                } catch (RootDeniedException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            String sdOverlays1 = Environment.getExternalStorageDirectory() + "/Overlays/Backup";
+            // CREATES /SDCARD/OVERLAYS/BACKUP
+            File dir1 = new File(sdOverlays1);
+            if (!dir1.exists() && !dir1.isDirectory()) {
+                CommandCapture command4 = new CommandCapture(0, "mkdir " + sdOverlays1);
+                try {
+                    RootTools.getShell(true).add(command4);
+                    while (!command4.isFinished()) {
+                        Thread.sleep(1);
+                    }
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (TimeoutException e) {
+                    e.printStackTrace();
+                } catch (RootDeniedException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            RootTools.remount("/system", "RW");
+            String vendover = "/vendor/overlay";
+            // CREATES /VENDOR/OVERLAY
+            File dir2 = new File(vendover);
+            if (!dir2.exists() && !dir2.isDirectory()) {
+                CommandCapture command5 = new CommandCapture(0, "mkdir " + vendover);
+                try {
+                    RootTools.getShell(true).add(command5);
+                    while (!command5.isFinished()) {
+                        Thread.sleep(1);
+                    }
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (TimeoutException e) {
+                    e.printStackTrace();
+                } catch (RootDeniedException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+
+
+
+            card1 = (CardView) findViewById(R.id.card_view1);
+            card2 = (CardView) findViewById(R.id.card_view2);
+            card3 = (CardView) findViewById(R.id.card_view3);
+
+            // CARD 1
+            card1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    Intent menuactivity = new Intent(menu.this, Install.class);
+
+                    Bundle bndlanimation =
+                            ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.anni1, R.anim.anni2).toBundle();
+                    startActivity(menuactivity, bndlanimation);
+
+
+
+                }
+            }); // end card 1
+
+            card2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                  //  Intent intent = new Intent(menu.this, Backup.class);
+                   // menu.this.startActivity(intent);
+
+                    Intent menuactivity = new Intent(menu.this, Backup.class);
+
+                    Bundle bndlanimation =
+                            ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.anni1, R.anim.anni2).toBundle();
+                    startActivity(menuactivity, bndlanimation);
+
+
+
+                } // end card 2 onClick
+            }); // end card 2
+
+            card3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Toast.makeText(menu.this, "Button 3", Toast.LENGTH_LONG).show();
+                    rebootcommand(); // REBOOT DEVICE
+
+                } // end card  onClick
+            }); // end card 3
+
+        } // ends root else
+    } // end oncreate
+
+    public void launchforum() {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://forums.bitsyko.com/index.php?sid=8dabaae5fd44b00df498fa84e36f6924")));
     }
+
+    public void launchwebsite() {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.bitsyko.com/")));
+    }
+
+    public void launchxda() {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://forum.xda-developers.com/android/apps-games/official-layers-bitsyko-apps-rro-t3012172")));
+    }
+
+    public void launchgplus() {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://plus.google.com/communities/102261717366580091389")));
+    }
+
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode,
@@ -412,9 +379,6 @@ public class menu extends Activity {
     // BACKUP COMMAND, BACKUP /VENDOR/OVERLAY FOLDER
     public void backupcommand() {
 
-
-
-
     }
 
     // REBOOT COMMAND, REBOOT DEVICE
@@ -444,28 +408,6 @@ public class menu extends Activity {
         }
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     /**
      * **********************************************************************************************************
@@ -563,6 +505,15 @@ public class menu extends Activity {
         } catch (Exception e) {
             Log.e(TAG, "Unzip exception", e);
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        //add the values which need to be saved from the drawer to the bundle
+        outState = result.saveInstanceState(outState);
+        //add the values which need to be saved from the accountHeader to the bundle
+        outState = headerResult.saveInstanceState(outState);
+        super.onSaveInstanceState(outState);
     }
 
 

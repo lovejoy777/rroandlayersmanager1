@@ -29,15 +29,31 @@
         android:layout_height="match_parent"
         android:gravity="center">
 
+        <RelativeLayout
+            android:id="@+id/toolbar_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:paddingTop="@dimen/tool_bar_top_padding">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:elevation="4dp"
+                android:transitionName="actionBar" />
+
+        </RelativeLayout>
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/background_material_light"
+            android:layout_below="@+id/toolbar_container"
+            android:id="@+id/fragment"
+            android:layout_gravity="center"/>
 
     </RelativeLayout>
-
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar_container"
-        android:id="@+id/fragment"
-        android:layout_gravity="center"/>
-
 </merge>
+

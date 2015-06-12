@@ -1,20 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:gravity="center">
 
-    <TextView
-        android:layout_marginTop="20dp"
+    <RelativeLayout
+        android:id="@+id/toolbar_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/splashTitle"
-        android:textColor="@color/splashtext"
-        android:textSize="40sp"
-        android:id="@+id/textViewTop"
-        android:layout_gravity="center_horizontal" />
+        android:background="?attr/colorPrimary"
+        android:paddingTop="@dimen/tool_bar_top_padding">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:elevation="4dp"
+            android:transitionName="actionBar" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/background_material_light"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_below="@+id/toolbar_container"
+        android:padding="16dp">
 
 
-</LinearLayout>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView1"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:src="@mipmap/ic_launcher" />
+
+    </LinearLayout>
+
+</RelativeLayout>
