@@ -8,7 +8,7 @@
     <style name="LayersTheme" parent="MaterialDrawerTheme.TranslucentStatus">
         <item name="colorPrimary">@color/material_drawer_primary</item>
         <item name="colorPrimaryDark">@color/material_drawer_primary_dark</item>
-        <item name="android:dialogTheme">@style/MaterialDrawerBaseTheme.Light.AlertDialog</item>
+        <item name="android:dialogTheme">@style/MaterialDrawerBaseTheme.AlertDialog</item>
         <item name="material_drawer_window_background">@color/material_drawer_window_background
         </item>
         <item name="material_drawer_background">@color/material_drawer_background</item>

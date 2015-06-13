@@ -10,6 +10,7 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.lovejoy777.rroandlayersmanager1.commands.RootCommands;
 import com.lovejoy777.rroandlayersmanager1.filepicker.FilePickerActivity;
 import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.exceptions.RootDeniedException;
@@ -37,7 +38,7 @@ public class Backup extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+       // RootTools.debugMode = true; //ON
 
         // GET STRING SZP
         final Intent extras = getIntent();
@@ -46,13 +47,10 @@ public class Backup extends Activity {
             SZP = extras.getStringExtra("key1");
         }
 
-
-
         if (SZP != null) {
 
             final AlertDialog.Builder alert = new AlertDialog.Builder(Backup.this);
-            alert.setIcon(R.drawable.chart);
-
+            alert.setIcon(R.drawable.backup);
             alert.setTitle("Options");
             alert.setMessage("delete or backup selected files.");
             alert.setPositiveButton("backup", new DialogInterface.OnClickListener() {
@@ -152,14 +150,15 @@ public class Backup extends Activity {
                                         zipFolder(Environment.getExternalStorageDirectory() + "/Overlays/Backup/temp/overlay", Environment.getExternalStorageDirectory() + "/Overlays/Backup/" + backupname + "/overlay.zip");
 
                                         // CHANGE PERMISSIONS OF /VENDOR/OVERLAY/ 666  && /VENDOR/OVERLAY 777 && /SDCARD/OVERLAYS/BACKUP/ 666
-                                        CommandCapture command18 = new CommandCapture(0, "chmod 755 " + Environment.getExternalStorageDirectory() + "/Overlays/Backup/temp");
+                                        CommandCapture command18 = new CommandCapture(0, "chmod 777 " + Environment.getExternalStorageDirectory() + "/Overlays/Backup/temp");
                                         RootTools.getShell(true).add(command18);
                                         while (!command18.isFinished()) {
                                             Thread.sleep(1);
                                         }
                                         // DELETE /SDCARD/OVERLAYS/BACKUP/TEMP FOLDER
-                                        RootTools.deleteFileOrDirectory(Environment.getExternalStorageDirectory() + "/Overlays/Backup/temp", true);
+                                       // RootTools.deleteFileOrDirectory(Environment.getExternalStorageDirectory() + "/Overlays/Backup/temp", true);
 
+                                        RootCommands.DeleteFileRoot(Environment.getExternalStorageDirectory() + "/Overlays/Backup/temp");
                                         // CHANGE PERMISSIONS OF /VENDOR/OVERLAY/ 666  && /VENDOR/OVERLAY 777 && /SDCARD/OVERLAYS/BACKUP/ 666
                                         CommandCapture command17 = new CommandCapture(0, "chmod -R 666 /vendor/overlay", "chmod 755 /vendor/overlay", "chmod -R 666" + Environment.getExternalStorageDirectory() + "/Overlays/Backup/");
                                         RootTools.getShell(true).add(command17);
@@ -206,6 +205,7 @@ public class Backup extends Activity {
             })
                     .setNegativeButton("delete", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
+
                             // COMMAND 1 DELETE SELECTED LAYERS
                             deletemultiplecommand();
 
@@ -283,7 +283,7 @@ public class Backup extends Activity {
                     path = path.substring(7);
 
                     RootTools.remount("/system", "RW");
-                    RootTools.deleteFileOrDirectory(path, true);
+                    RootCommands.DeleteFileRoot(path);
                 }
             }
 
@@ -294,6 +294,8 @@ public class Backup extends Activity {
             Toast.makeText(Backup.this, "NOTHING TO DELETE", Toast.LENGTH_LONG).show();
         }
     }
+
+
 
     /**
      * **********************************************************************************************************

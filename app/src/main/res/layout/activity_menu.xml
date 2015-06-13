@@ -27,7 +27,7 @@
         android:layout_height="fill_parent"
         android:orientation="vertical"
         android:layout_below="@+id/toolbar_container"
-        android:padding="16dp"
+        android:padding="@dimen/activity_horizontal_margin"
         android:background="@color/background_material_light">
 
     <!-- A CardView 1 Installed -->
@@ -51,21 +51,19 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/installed_image"
                 android:src="@drawable/plus"
+                android:layout_centerVertical="true"
                 android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginEnd="16dp"
-                />
+                android:layout_marginEnd="16dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/card1text1"
-                android:layout_toEndOf="@+id/installed_image"
-                android:layout_alignParentTop="true"
                 android:textSize="25sp"
                 android:textColor="@color/blueicon2"
                 android:text="@string/card1text1"
-                />
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@+id/installed_image" />
 
 
 
@@ -73,20 +71,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/card1text3"
-                android:layout_toEndOf="@+id/installed_image"
-                android:layout_below="@+id/card1text1"
                 android:textColor="@color/blueicon1"
                 android:text="@string/card1text2"
-                />
+                android:layout_below="@+id/card1text1"
+                android:layout_alignStart="@+id/card1text1" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/installed_image"
-                android:layout_below="@+id/card1text3"
                 android:textColor="@color/blueicon1"
                 android:text="@string/card1text3"
-                />
+                android:layout_below="@+id/card1text3"
+                android:layout_alignStart="@+id/card1text1" />
 
         </RelativeLayout>
 
@@ -112,9 +108,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/install_image"
-                android:src="@drawable/chart"
+                android:src="@drawable/backup"
                 android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
+                android:layout_centerVertical="true"
                 android:layout_marginEnd="16dp"
                 />
 
@@ -122,8 +118,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/card2text1"
-                android:layout_toEndOf="@+id/install_image"
                 android:layout_alignParentTop="true"
+                android:layout_toEndOf="@+id/install_image"
                 android:textSize="25sp"
                 android:textColor="@color/blueicon2"
                 android:text="@string/card2text1"
@@ -133,8 +129,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/card2text2"
-                android:layout_toEndOf="@+id/install_image"
                 android:layout_below="@+id/card2text1"
+                android:layout_alignStart="@+id/card2text1"
                 android:textColor="@color/blueicon1"
                 android:text="@string/card2text2"
                 />
@@ -143,8 +139,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/card2text3"
-                android:layout_toEndOf="@+id/install_image"
                 android:layout_below="@+id/card2text2"
+                android:layout_alignStart="@+id/card2text2"
                 android:textColor="@color/blueicon1"
                 android:text="@string/card2text3"
                 />
@@ -177,7 +173,7 @@
                 android:id="@+id/reboot_image"
                 android:src="@drawable/reboot"
                 android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
+                android:layout_centerVertical="true"
                 android:layout_marginEnd="16dp"
                 />
 
@@ -185,8 +181,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/card3text1"
-                android:layout_toEndOf="@+id/reboot_image"
                 android:layout_alignParentTop="true"
+                android:layout_toEndOf="@+id/reboot_image"
                 android:text="@string/card3text1"
                 android:textColor="@color/blueicon2"
                 android:textSize="25sp"
@@ -196,8 +192,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/card3text2"
-                android:layout_toEndOf="@+id/reboot_image"
                 android:layout_below="@+id/card3text1"
+                android:layout_alignStart="@+id/card3text1"
                 android:textColor="@color/blueicon1"
                 android:text="@string/card3text2"
                 />
@@ -206,8 +202,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/card3text3"
-                android:layout_toEndOf="@+id/reboot_image"
                 android:layout_below="@+id/card3text2"
+                android:layout_alignStart="@+id/card3text1"
                 android:textColor="@color/blueicon1"
                 android:text="@string/card3text3"
                 />

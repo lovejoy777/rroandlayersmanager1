@@ -21,30 +21,20 @@ public class Splash extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
-       // final View splash = findViewById(R.id.imageView1);
 
         // Handle Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
         setSupportActionBar(toolbar);
 
         final ImageView iv = (ImageView) findViewById(R.id.imageView1);
         final Animation an = AnimationUtils.loadAnimation(getBaseContext(),R.anim.splash);
-        //final Animation an2 = AnimationUtils.loadAnimation(getBaseContext(), R.anim.scale);
 
         iv.startAnimation(an);
-
         an.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
 
             }
-
-
-
-
-
-
 
             @Override
             public void onAnimationEnd(Animation animation) {
@@ -65,7 +55,4 @@ public class Splash extends AppCompatActivity {
             }
         });
     }
-
-
-
 }

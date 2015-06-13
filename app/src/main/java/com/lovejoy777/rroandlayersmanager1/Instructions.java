@@ -1,14 +1,9 @@
 package com.lovejoy777.rroandlayersmanager1;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 
 /**
  * Created by lovejoy on 05/10/14.

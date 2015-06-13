@@ -18,11 +18,15 @@
 package com.lovejoy777.rroandlayersmanager1.filepicker;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.lovejoy777.rroandlayersmanager1.About;
 import com.lovejoy777.rroandlayersmanager1.R;
 
 import java.io.File;
@@ -43,5 +47,40 @@ public class FilePickerActivity extends AbstractFilePickerActivity<File> {
         return fragment;
 
 
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the menu/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        switch (item.getItemId()) {
+
+            case R.id.action_all:
+                Intent intent1 = new Intent();
+                intent1.setClass(this, About.class);
+                startActivity(intent1);
+                break;
+
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 }

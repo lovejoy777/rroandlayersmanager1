@@ -1,6 +1,5 @@
 package com.lovejoy777.rroandlayersmanager1;
 
-import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -10,12 +9,12 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.widget.CardView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.Toast;
 
-import com.lovejoy777.rroandlayersmanager1.filepicker.FilePickerActivity;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.accountswitcher.AccountHeader;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
@@ -35,7 +34,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.concurrent.TimeoutException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -52,20 +50,12 @@ public class menu extends AppCompatActivity {
     private AccountHeader.Result headerResult = null;
     private Drawer.Result result = null;
 
-
-    final String startDirInstalled = "/vendor/overlay";
-    final String startDirInstall = Environment.getExternalStorageDirectory() +  "/Overlays";
-    private static final int CODE_SD = 0;
-    private static final int CODE_DB = 1;
-
     CardView card1, card2, card3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -111,7 +101,6 @@ public class menu extends AppCompatActivity {
                 .withToolbar(toolbar)
                 .withActionBarDrawerToggleAnimated(true)
                 .withDisplayBelowToolbar(true)
-                //.withSliderBackgroundColor(bgcolor)
                 .withAccountHeader(headerResult) //set the AccountHeader we created earlier for the header
                 .addDrawerItems(
 
@@ -167,10 +156,6 @@ public class menu extends AppCompatActivity {
         result.setSelectionByIdentifier(0, false);
         headerResult.setActiveProfile(profile);
 
-
-
-
-
         // IF ROOT ACCESS IS GIVEN / ELSE LAUNCH PLAYSTORE FOR SUPERUSER APP
         if (!RootTools.isAccessGiven()) {
             Toast.makeText(menu.this, "Your device doesn't seem to be rooted", Toast.LENGTH_LONG).show();
@@ -183,7 +168,6 @@ public class menu extends AppCompatActivity {
 
             String sdOverlays = Environment.getExternalStorageDirectory() + "/Overlays";
             String sdcard = Environment.getExternalStorageDirectory() + "";
-            String vendor = "/vend";
 
             RootTools.remount(sdcard, "RW");
 
@@ -236,6 +220,7 @@ public class menu extends AppCompatActivity {
 
             RootTools.remount("/system", "RW");
             String vendover = "/vendor/overlay";
+
             // CREATES /VENDOR/OVERLAY
             File dir2 = new File(vendover);
             if (!dir2.exists() && !dir2.isDirectory()) {
@@ -259,9 +244,6 @@ public class menu extends AppCompatActivity {
 
             }
 
-
-
-
             card1 = (CardView) findViewById(R.id.card_view1);
             card2 = (CardView) findViewById(R.id.card_view2);
             card3 = (CardView) findViewById(R.id.card_view3);
@@ -277,8 +259,6 @@ public class menu extends AppCompatActivity {
                     Bundle bndlanimation =
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.anni1, R.anim.anni2).toBundle();
                     startActivity(menuactivity, bndlanimation);
-
-
 
                 }
             }); // end card 1
@@ -305,8 +285,25 @@ public class menu extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
-                    Toast.makeText(menu.this, "Button 3", Toast.LENGTH_LONG).show();
-                    rebootcommand(); // REBOOT DEVICE
+                    final AlertDialog.Builder alert = new AlertDialog.Builder(menu.this);
+                    alert.setIcon(R.drawable.reboot);
+                    alert.setTitle("Reboot");
+                    alert.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int id) {
+
+                            rebootcommand(); // REBOOT DEVICE
+
+                        }
+                    })
+                            .setNegativeButton("no", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+
+                                    dialog.dismiss();
+                                }
+                            });
+
+                    alert.show();
 
                 } // end card  onClick
             }); // end card 3
@@ -328,57 +325,6 @@ public class menu extends AppCompatActivity {
 
     public void launchgplus() {
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://plus.google.com/communities/102261717366580091389")));
-    }
-
-
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode,
-                                    Intent data) {
-        if ((CODE_SD == requestCode || CODE_DB == requestCode) &&
-                resultCode == Activity.RESULT_OK) {
-            if (data.getBooleanExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE,
-                    false)) {
-                // 2
-                ArrayList<String> paths = data.getStringArrayListExtra(
-                        FilePickerActivity.EXTRA_PATHS);
-                StringBuilder sb = new StringBuilder();
-
-                if (paths != null) {
-                    for (String path : paths) {
-                        if (path.startsWith("file://")) {
-                            path = path.substring(7);
-                            sb.append(path);
-                            // sb.append("\n");
-                        }
-                    }
-
-                    String SZP = (sb.toString());
-                    Intent iIntent = new Intent(this, menu.class);
-                    iIntent.putExtra("key1", SZP);
-                    iIntent.putStringArrayListExtra("key2", paths);
-                    startActivity(iIntent);
-
-                }
-
-            } else {
-                // 2
-                // Get the File path from the Uri
-                String SZP = (data.getData().toString());
-                if (SZP.startsWith("file://")) {
-                    SZP = SZP.substring(7);
-                    Intent iIntent = new Intent(this, menu.class);
-                    iIntent.putExtra("key1", SZP);
-                    startActivity(iIntent);
-                }
-            }   // tvlayerspath.setText(data.getData().toString());
-        }
-    }
-
-    // BACKUP COMMAND, BACKUP /VENDOR/OVERLAY FOLDER
-    public void backupcommand() {
-
     }
 
     // REBOOT COMMAND, REBOOT DEVICE
@@ -516,5 +462,9 @@ public class menu extends AppCompatActivity {
         super.onSaveInstanceState(outState);
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.back2, R.anim.back1);
+    }
 }

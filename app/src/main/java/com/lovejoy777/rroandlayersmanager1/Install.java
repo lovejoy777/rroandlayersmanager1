@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.lovejoy777.rroandlayersmanager1.commands.RootCommands;
@@ -35,7 +34,6 @@ public class Install extends AppCompatActivity{
 
     static final String TAG = "Install";
 
-    final String startDirInstalled = "/vendor/overlay";
     final String startDirInstall = Environment.getExternalStorageDirectory() +  "/Overlays";
     private static final int CODE_SD = 0;
     private static final int CODE_DB = 1;
@@ -44,7 +42,7 @@ public class Install extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-// GET STRING SZP
+        // GET STRING SZP
         final Intent extras = getIntent();
         String SZP = null;
         if (extras != null) {
@@ -56,11 +54,10 @@ public class Install extends AppCompatActivity{
         if (SZP != null) {
 
             final AlertDialog.Builder alert = new AlertDialog.Builder(Install.this);
-            alert.setIcon(R.drawable.chart);
-
+            alert.setIcon(R.drawable.plus);
             alert.setTitle("Options");
             alert.setMessage("install or restore selected files.");
-            alert.setPositiveButton("Install", new DialogInterface.OnClickListener() {
+            alert.setPositiveButton("install", new DialogInterface.OnClickListener() {
 
                 public void onClick(DialogInterface dialog, int id) {
 
@@ -68,10 +65,10 @@ public class Install extends AppCompatActivity{
 
                 }
             })
-                    .setNegativeButton("Restore", new DialogInterface.OnClickListener() {
+                    .setNegativeButton("restore", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            // COMMAND 1 DELETE SELECTED LAYERS
 
+                            // COMMAND RESTORE SELECTED LAYERS
                             restore();
 
                         }
@@ -101,7 +98,6 @@ public class Install extends AppCompatActivity{
                 resultCode == Activity.RESULT_OK) {
             if (data.getBooleanExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE,
                     false)) {
-                // 2
                 ArrayList<String> paths = data.getStringArrayListExtra(
                         FilePickerActivity.EXTRA_PATHS);
                 StringBuilder sb = new StringBuilder();
@@ -111,7 +107,6 @@ public class Install extends AppCompatActivity{
                         if (path.startsWith("file://")) {
                             path = path.substring(7);
                             sb.append(path);
-                            // sb.append("\n");
                         }
                     }
 
@@ -124,7 +119,6 @@ public class Install extends AppCompatActivity{
                 }
 
             } else {
-                // 2
                 // Get the File path from the Uri
                 String SZP = (data.getData().toString());
                 if (SZP.startsWith("file://")) {
@@ -274,18 +268,17 @@ public class Install extends AppCompatActivity{
         Intent extras = getIntent();
         String SZP = extras.getStringExtra("key1");
         String layersdata = getApplicationInfo().dataDir + "/overlay";
-        String overlaypath = "/vendor";
 
         try {
 
-            // MK DIR SIONDATA
+            // MK DIR LAYERSDATA
             CommandCapture command1 = new CommandCapture(0, "mkdir " + layersdata);
             RootTools.getShell(true).add(command1);
             while (!command1.isFinished()) {
                 Thread.sleep(1);
             }
 
-            // ELSE NOT A .ZIP THEN COPY FILE TO SIONDATA
+            // ELSE NOT A .ZIP THEN COPY FILE TO LAYERSDATA
             CommandCapture command5 = new CommandCapture(0, "cp -f " + SZP + " " + layersdata + "/");
             RootTools.getShell(true).add(command5);
             while (!command5.isFinished()) {
@@ -349,7 +342,7 @@ public class Install extends AppCompatActivity{
         }
     }
 
-    // COMMAND 3 REBOOT DEVICE
+    // COMMAND  RESTORE SELECTED BACKUP
 
     public void restore() {
 
@@ -363,7 +356,8 @@ public class Install extends AppCompatActivity{
                 RootTools.remount("/system/", "RW");
 
                 // DELETE /VENDOR/OVERLAY
-                RootTools.deleteFileOrDirectory("/vendor/overlay", true);
+
+                RootCommands.DeleteFileRoot("/vendor/overlay");
 
                 // MK DIR /VENDOR/OVERLAY
                 CommandCapture command3 = new CommandCapture(0, "mkdir /vendor/overlay");
@@ -403,7 +397,7 @@ public class Install extends AppCompatActivity{
                 RootCommands.moveCopyRoot(Environment.getExternalStorageDirectory() + "/Overlays/Backup/Temp/overlay", "/vendor/");
 
                 // DELETE /SDCARD/OVERLAYS/BACKUP/TEMP FOLDER
-                RootTools.deleteFileOrDirectory(Environment.getExternalStorageDirectory() + "/Overlays/Backup/Temp", true);
+                RootCommands.DeleteFileRoot(Environment.getExternalStorageDirectory() + "/Overlays/Backup/Temp");
 
                 // CHANGE PERMISSIONS OF /VENDOR/OVERLAY/ 666  && /VENDOR/OVERLAY 777 && /SDCARD/OVERLAYS/BACKUP/ 666
                 CommandCapture command7 = new CommandCapture(0, "chmod -R 666 /vendor/overlay", "chmod 755 /vendor/overlay", "chmod -R 666" + Environment.getExternalStorageDirectory() + "/Overlays/Backup");
@@ -508,5 +502,11 @@ public class Install extends AppCompatActivity{
         } catch (Exception e) {
             Log.e(TAG, "Unzip exception", e);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.back2, R.anim.back1);
     }
 }
