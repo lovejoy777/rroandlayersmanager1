@@ -2,9 +2,5 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".menu">
-    <item
-        android:id="@+id/action_all"
-        android:title="@string/action_all"
-        android:orderInCategory="100"
-        app:showAsAction="always" />
+
 </menu>

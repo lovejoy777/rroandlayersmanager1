@@ -43,7 +43,9 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
+            android:paddingTop="16dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
             >
 
             <ImageView
@@ -58,12 +60,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/card1text1"
-                android:textSize="25sp"
-                android:textColor="@color/blueicon2"
-                android:text="@string/card1text1"
                 android:layout_alignParentTop="true"
-                android:layout_toEndOf="@+id/installed_image" />
+                android:layout_toEndOf="@+id/installed_image"
+                android:id="@+id/card1text1"
+                android:textSize="@dimen/card_primary_text"
+                android:textColor="@color/app_text_primary"
+                android:text="@string/card1text1"
+                 />
 
 
 
@@ -71,7 +74,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/card1text3"
-                android:textColor="@color/blueicon1"
+                android:textColor="@color/app_text_secondary"
                 android:text="@string/card1text2"
                 android:layout_below="@+id/card1text1"
                 android:layout_alignStart="@+id/card1text1" />
@@ -79,10 +82,35 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/blueicon1"
+                android:textColor="@color/app_text_secondary"
                 android:text="@string/card1text3"
                 android:layout_below="@+id/card1text3"
-                android:layout_alignStart="@+id/card1text1" />
+                android:layout_alignStart="@+id/card1text1"
+                android:id="@+id/textView2" />
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="install"
+                android:id="@+id/installbutton"
+                android:layout_below="@+id/textView2"
+                android:layout_toStartOf="@+id/restorebutton"
+                android:textColor="@color/app_text_accent"
+                android:background="@android:color/transparent"
+                />
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="restore"
+                android:id="@+id/restorebutton"
+                android:layout_below="@+id/textView2"
+                android:layout_alignParentEnd="true"
+                android:textColor="@color/app_text_accent"
+                android:background="@android:color/transparent"
+                />
 
         </RelativeLayout>
 
@@ -101,7 +129,9 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
+            android:paddingTop="16dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
             >
 
             <ImageView
@@ -120,8 +150,8 @@
                 android:id="@+id/card2text1"
                 android:layout_alignParentTop="true"
                 android:layout_toEndOf="@+id/install_image"
-                android:textSize="25sp"
-                android:textColor="@color/blueicon2"
+                android:textSize="@dimen/card_primary_text"
+                android:textColor="@color/app_text_primary"
                 android:text="@string/card2text1"
                 />
 
@@ -131,7 +161,7 @@
                 android:id="@+id/card2text2"
                 android:layout_below="@+id/card2text1"
                 android:layout_alignStart="@+id/card2text1"
-                android:textColor="@color/blueicon1"
+                android:textColor="@color/app_text_secondary"
                 android:text="@string/card2text2"
                 />
 
@@ -141,8 +171,32 @@
                 android:id="@+id/card2text3"
                 android:layout_below="@+id/card2text2"
                 android:layout_alignStart="@+id/card2text2"
-                android:textColor="@color/blueicon1"
+                android:textColor="@color/app_text_secondary"
                 android:text="@string/card2text3"
+                />
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="backup"
+                android:id="@+id/backupbutton"
+                android:layout_below="@+id/card2text3"
+                android:layout_toStartOf="@+id/deletebutton"
+                android:textColor="@color/app_text_accent"
+                android:background="@android:color/transparent"
+                />
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="delete"
+                android:id="@+id/deletebutton"
+                android:layout_below="@+id/card2text3"
+                android:layout_alignParentEnd="true"
+                android:textColor="@color/app_text_accent"
+                android:background="@android:color/transparent"
                 />
 
 
@@ -184,8 +238,8 @@
                 android:layout_alignParentTop="true"
                 android:layout_toEndOf="@+id/reboot_image"
                 android:text="@string/card3text1"
-                android:textColor="@color/blueicon2"
-                android:textSize="25sp"
+                android:textColor="@color/app_text_primary"
+                android:textSize="@dimen/card_primary_text"
                 />
 
             <TextView
@@ -194,7 +248,7 @@
                 android:id="@+id/card3text2"
                 android:layout_below="@+id/card3text1"
                 android:layout_alignStart="@+id/card3text1"
-                android:textColor="@color/blueicon1"
+                android:textColor="@color/app_text_secondary"
                 android:text="@string/card3text2"
                 />
 
@@ -204,7 +258,7 @@
                 android:id="@+id/card3text3"
                 android:layout_below="@+id/card3text2"
                 android:layout_alignStart="@+id/card3text1"
-                android:textColor="@color/blueicon1"
+                android:textColor="@color/app_text_secondary"
                 android:text="@string/card3text3"
                 />
 

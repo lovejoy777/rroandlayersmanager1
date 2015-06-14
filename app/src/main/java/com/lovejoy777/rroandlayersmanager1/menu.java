@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.mikepenz.materialdrawer.Drawer;
@@ -51,12 +52,15 @@ public class menu extends AppCompatActivity {
     private Drawer.Result result = null;
 
     CardView card1, card2, card3;
+    Button card1btn1, card1btn2, card2btn1, card2btn2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
+       // Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -100,15 +104,15 @@ public class menu extends AppCompatActivity {
                 .withActivity(this)
                 .withToolbar(toolbar)
                 .withActionBarDrawerToggleAnimated(true)
-                .withDisplayBelowToolbar(true)
+                //.withDisplayBelowToolbar(true)
                 .withAccountHeader(headerResult) //set the AccountHeader we created earlier for the header
                 .addDrawerItems(
 
                         new PrimaryDrawerItem().withName(R.string.drawer_item_about).withIcon(R.drawable.ic_about).withIdentifier(1).withCheckable(false),
                         new PrimaryDrawerItem().withName(R.string.drawer_item_changelog).withIcon(R.drawable.ic_changelog).withIdentifier(2).withCheckable(false),
-                        new DividerDrawerItem(),
+                      //  new DividerDrawerItem(),
                         new PrimaryDrawerItem().withName(R.string.drawer_item_instructions).withIcon(R.drawable.info).withIdentifier(3).withCheckable(false),
-                        new PrimaryDrawerItem().withName(R.string.drawer_item_settings).withIcon(R.drawable.settings).withIdentifier(4).withCheckable(false),
+                      //  new PrimaryDrawerItem().withName(R.string.drawer_item_settings).withIcon(R.drawable.settings).withIdentifier(4).withCheckable(false),
                         new SectionDrawerItem().withName(R.string.drawer_item_links_header),
                         new DividerDrawerItem(),
                         new SecondaryDrawerItem().withName(R.string.drawer_item_gplus).withIcon(R.drawable.bitsyko_g_plus).withIdentifier(5).withCheckable(false),
@@ -149,6 +153,8 @@ public class menu extends AppCompatActivity {
                 .withSavedInstance(savedInstanceState)
                 .build();
 
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+       // result.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         result.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
 
@@ -244,16 +250,18 @@ public class menu extends AppCompatActivity {
 
             }
 
+            card1btn1 = (Button) findViewById(R.id.installbutton);
+            card1btn2 = (Button) findViewById(R.id.restorebutton);
+            card2btn1 = (Button) findViewById(R.id.backupbutton);
+            card2btn2 = (Button) findViewById(R.id.deletebutton);
             card1 = (CardView) findViewById(R.id.card_view1);
             card2 = (CardView) findViewById(R.id.card_view2);
             card3 = (CardView) findViewById(R.id.card_view3);
 
-            // CARD 1
-            card1.setOnClickListener(new View.OnClickListener() {
+            // CARD 1 button1
+            card1btn1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-
                     Intent menuactivity = new Intent(menu.this, Install.class);
 
                     Bundle bndlanimation =
@@ -261,25 +269,50 @@ public class menu extends AppCompatActivity {
                     startActivity(menuactivity, bndlanimation);
 
                 }
-            }); // end card 1
+            }); // end card1 button1
 
-            card2.setOnClickListener(new View.OnClickListener() {
+            // CARD 1 button1
+            card1btn2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                  //  Intent intent = new Intent(menu.this, Backup.class);
-                   // menu.this.startActivity(intent);
 
+                    Intent menuactivity = new Intent(menu.this, Restore.class);
+
+                    Bundle bndlanimation =
+                            ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.anni1, R.anim.anni2).toBundle();
+                    startActivity(menuactivity, bndlanimation);
+
+                }
+            }); // end card1 button2
+
+            // CARD 1 button1
+            card2btn1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                     Intent menuactivity = new Intent(menu.this, Backup.class);
 
                     Bundle bndlanimation =
                             ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.anni1, R.anim.anni2).toBundle();
                     startActivity(menuactivity, bndlanimation);
 
+                }
+            }); // end card1 button1
+
+            // CARD 1 button1
+            card2btn2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
 
-                } // end card 2 onClick
-            }); // end card 2
+                    Intent menuactivity = new Intent(menu.this, Delete.class);
+
+                    Bundle bndlanimation =
+                            ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.anni1, R.anim.anni2).toBundle();
+                    startActivity(menuactivity, bndlanimation);
+
+                }
+            }); // end card1 button2
 
             card3.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -461,10 +494,29 @@ public class menu extends AppCompatActivity {
         outState = headerResult.saveInstanceState(outState);
         super.onSaveInstanceState(outState);
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+        if (id == R.id.home) {
+            finish();
+            overridePendingTransition(R.anim.back2, R.anim.back1);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.back2, R.anim.back1);
     }
+
 }

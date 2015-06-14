@@ -63,11 +63,7 @@ public class FilePickerActivity extends AbstractFilePickerActivity<File> {
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
 
-            case R.id.action_all:
-                Intent intent1 = new Intent();
-                intent1.setClass(this, About.class);
-                startActivity(intent1);
-                break;
+
 
 
         }

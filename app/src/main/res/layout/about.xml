@@ -41,7 +41,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="@string/layersmanager"
-            android:textSize="35sp" />
+            android:textColor="@color/app_text_primary"
+            android:textSize="35sp"
+            />
 
         <TextView
             android:id="@+id/textView4"
@@ -51,7 +53,9 @@
             android:layout_marginTop="8dp"
             android:layout_weight="1"
             android:text="@string/aboutTV3"
-            android:textSize="15sp" />
+            android:textColor="@color/app_text_secondary"
+            android:textSize="15sp"
+            />
 
         <TextView
             android:id="@+id/textView3"
@@ -61,7 +65,9 @@
             android:layout_marginTop="34dp"
             android:layout_weight="1"
             android:text="@string/aboutTV2"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            android:textColor="@color/app_text_secondary"
+            />
 
         <TextView
             android:id="@+id/textView5"
@@ -71,7 +77,9 @@
             android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:text="@string/version"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            android:textColor="@color/app_text_secondary"
+            />
 
     </LinearLayout>
 </ScrollView>

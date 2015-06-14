@@ -18,6 +18,7 @@
 package com.lovejoy777.rroandlayersmanager1.filepicker;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.net.Uri;
@@ -29,6 +30,7 @@ import android.util.TypedValue;
 import android.view.WindowManager;
 
 import com.lovejoy777.rroandlayersmanager1.R;
+import com.lovejoy777.rroandlayersmanager1.menu;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -203,10 +205,23 @@ public abstract class AbstractFilePickerActivity<T> extends AppCompatActivity
         finish();
     }
 
+
+
     @Override
     public void onBackPressed() {
-            super.onBackPressed();
-            overridePendingTransition(R.anim.back2, R.anim.back1);
 
+
+
+        finish();
+        Intent menuactivity = new Intent(AbstractFilePickerActivity.this, menu.class);
+
+        menuactivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        Bundle bndlanimation =
+                ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.anni1, R.anim.anni2).toBundle();
+        startActivity(menuactivity, bndlanimation);
+
+       // finish();
+        //super.onBackPressed();
+        //overridePendingTransition(R.anim.back2, R.anim.back1);
     }
 }

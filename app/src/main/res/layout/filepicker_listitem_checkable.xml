@@ -44,7 +44,7 @@
         android:fontFamily="light"
         android:padding="8dp"
         android:gravity="center_vertical"
-        android:textColor="@color/blueicon1"
+        android:textColor="@color/app_text_secondary"
         android:id="@android:id/text1"
         android:maxLines="1"
         android:ellipsize="end"

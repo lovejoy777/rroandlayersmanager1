@@ -44,7 +44,9 @@
 
             android:layout_marginTop="10dp"
             android:text="@string/instructionsTV6"
-            android:textSize="@dimen/title_text_size" />
+            android:textSize="@dimen/title_text_size"
+            android:textColor="@color/app_text_primary"
+            />
 
         <TextView
             android:id="@+id/textView7"
@@ -53,7 +55,9 @@
             android:layout_marginTop="20dp"
             android:padding="24dp"
             android:text="@string/instructionsTV7"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:textColor="@color/app_text_secondary"
+            />
 
     </LinearLayout>
 

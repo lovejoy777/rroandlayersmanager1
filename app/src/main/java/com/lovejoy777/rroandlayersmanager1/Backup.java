@@ -32,7 +32,7 @@ public class Backup extends Activity {
 
     private static final int CODE_SD = 0;
     private static final int CODE_DB = 1;
-    final String startDirInstalled = "/vendor/overlay";
+    final String startDirBackup = "/vendor/overlay";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,13 +49,6 @@ public class Backup extends Activity {
 
         if (SZP != null) {
 
-            final AlertDialog.Builder alert = new AlertDialog.Builder(Backup.this);
-            alert.setIcon(R.drawable.backup);
-            alert.setTitle("Options");
-            alert.setMessage("delete or backup selected files.");
-            alert.setPositiveButton("backup", new DialogInterface.OnClickListener() {
-
-                public void onClick(DialogInterface dialog, int id) {
                     final AlertDialog.Builder alert = new AlertDialog.Builder(Backup.this);
                     final EditText input = new EditText(Backup.this);
                     alert.setIcon(R.drawable.ic_backup);
@@ -74,7 +67,7 @@ public class Backup extends Activity {
 
                             if (backupname.length() <= 1) {
 
-                                Toast.makeText(Backup.this, "INPUT A NAME", Toast.LENGTH_LONG).show();
+                                Toast.makeText(Backup.this, "input a name", Toast.LENGTH_LONG).show();
 
                                 finish();
 
@@ -86,7 +79,7 @@ public class Backup extends Activity {
                                 // Folder is empty
                                 if (contents.length == 0) {
 
-                                    Toast.makeText(Backup.this, "NOTHING TO BACKUP", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(Backup.this, "nothing to backup", Toast.LENGTH_LONG).show();
 
                                     finish();
                                 } else {
@@ -169,7 +162,7 @@ public class Backup extends Activity {
                                         // CLOSE ALL SHELLS
                                         RootTools.closeAllShells();
 
-                                        Toast.makeText(Backup.this, "BACKUP COMPLETED", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(Backup.this, "backup complete", Toast.LENGTH_LONG).show();
 
                                     } catch (IOException e) {
                                         e.printStackTrace();
@@ -184,9 +177,6 @@ public class Backup extends Activity {
                                     finish();
                                 }
                             }
-
-
-
                         }
                     });
 
@@ -201,30 +191,17 @@ public class Backup extends Activity {
 
                     alert.show();
 
-                }
-            })
-                    .setNegativeButton("delete", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-
-                            // COMMAND 1 DELETE SELECTED LAYERS
-                            deletemultiplecommand();
-
-                        }
-                    });
-
-            alert.show();
         } else {
             Intent i = new Intent(Intent.ACTION_GET_CONTENT);
             // Set these depending on your use case. These are the defaults.
             i.putExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, true);
             i.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, false);
             i.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_FILE);
-            i.putExtra(FilePickerActivity.EXTRA_START_PATH, startDirInstalled);
+            i.putExtra(FilePickerActivity.EXTRA_START_PATH, startDirBackup);
 
             // start filePicker forResult
             startActivityForResult(i, CODE_SD);
         }
-
     } // ends onCreate
 
     @Override
@@ -271,32 +248,6 @@ public class Backup extends Activity {
         }
     } // ends onActivity for result
 
-    public void deletemultiplecommand () {
-
-        ArrayList<String> paths;
-        paths = getIntent().getStringArrayListExtra("key2");
-
-        if (paths != null) {
-
-            for (String path : paths) {
-                if (path.startsWith("file://")) {
-                    path = path.substring(7);
-
-                    RootTools.remount("/system", "RW");
-                    RootCommands.DeleteFileRoot(path);
-                }
-            }
-
-            Toast.makeText(Backup.this, "DELETED SELECTED LAYERS", Toast.LENGTH_LONG).show();
-
-        } else {
-
-            Toast.makeText(Backup.this, "NOTHING TO DELETE", Toast.LENGTH_LONG).show();
-        }
-    }
-
-
-
     /**
      * **********************************************************************************************************
      * ZIP
@@ -330,12 +281,9 @@ public class Backup extends Activity {
         }
     }
 
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.back2, R.anim.back1);
     }
-
-
 }

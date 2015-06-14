@@ -5,6 +5,7 @@
     <string name="slogan">\"Your Style Your Choice\"</string>
     <string name="splashTitle">SPLASH</string>
     <string name="action_all">All</string>
+    <string name="action_settings">Settings</string>
     <string name="version">Version 3.8</string>
     <string name="layersmanager">Layers Manager</string>
 
@@ -98,6 +99,8 @@
     <!-- Changelog -->
     <string name="changelogtitle">Changelog</string>
     <string name="changelog">
+        • <u><b>3.8</b></u>\n
+     • Rewritten complete app.\n
      • <u><b>3.7</b></u>\n
      • Color Picker bug fix.\n
      • <u><b>3.6</b></u>\n

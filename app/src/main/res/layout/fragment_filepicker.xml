@@ -33,6 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"
+        android:textColor="@color/app_text_accent"
         android:elevation="4dp"
         android:maxLines="1"
         android:singleLine="true"

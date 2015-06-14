@@ -5,7 +5,7 @@
     android:background="@color/primary"
     android:paddingTop="2.0dip"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="56.0dip"
     android:elevation="4.0dip"
     android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-    android:theme="@style/LayersTheme" />
+    android:theme="@style/ToolbarTheme" />

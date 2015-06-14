@@ -18,7 +18,8 @@ xmlns:tools="http://schemas.android.com/tools"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="Layers"
-        android:theme="@style/LayersTheme" >
+        android:theme="@style/LayersTheme"
+        >
         <activity
             android:name=".Splash"
             android:noHistory="true"
@@ -35,7 +36,9 @@ xmlns:tools="http://schemas.android.com/tools"
             android:name=".menu"
             android:icon="@mipmap/ic_launcher"
             android:label="Menu"
-            android:theme="@style/LayersTheme">
+            android:theme="@style/LayersTheme"
+            android:parentActivityName=".menu"
+            >
             <intent-filter>
                 <action android:name="com.lovejoy777.rroandlayersmanager1.MENU" />
 
@@ -68,6 +71,33 @@ xmlns:tools="http://schemas.android.com/tools"
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".Restore"
+            android:icon="@mipmap/ic_launcher"
+            android:label="Restore"
+            android:theme="@style/LayersTheme"
+            android:parentActivityName=".menu">
+            <intent-filter>
+                <action android:name="com.lovejoy777.rroandlayersmanager1.RESTORE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".Delete"
+            android:icon="@mipmap/ic_launcher"
+            android:label="Delete"
+            android:theme="@style/LayersTheme"
+            android:parentActivityName=".menu">
+            <intent-filter>
+                <action android:name="com.lovejoy777.rroandlayersmanager1.DELETE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
 
         <activity
             android:name=".Settings"
